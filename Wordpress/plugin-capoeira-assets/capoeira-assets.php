@@ -68,11 +68,11 @@ function capoeira_assets_init() {
     // Section Patrocinadores
     add_settings_section('capoeira_assets_section_sponsors', 'Patrocinadores (Exibidos no rodapé de algumas páginas)', 'capoeira_assets_section_sponsors_cb', 'capoeira-assets');
 
-     = capoeira_get_images_map();
-    foreach( as  => ) {
-         = (strpos(, 'sponsor') !== false) ? 'capoeira_assets_section_sponsors' : 'capoeira_assets_section_main';
-        add_settings_field(, 'Imagem: ' . , 'capoeira_assets_field_img_cb', 'capoeira-assets', , ['id' => , 'label_for' => ]);
-        register_setting('capoeira-assets', );
+    $images = capoeira_get_images_map();
+    foreach($images as $id => $path) {
+        $section = (strpos($path, 'sponsor') !== false) ? 'capoeira_assets_section_sponsors' : 'capoeira_assets_section_main';
+        add_settings_field($id, 'Imagem: ' . $path, 'capoeira_assets_field_img_cb', 'capoeira-assets', $section, ['id' => $id, 'label_for' => $id]);
+        register_setting('capoeira-assets', $id);
     }
 }
 
@@ -83,21 +83,21 @@ function capoeira_assets_section_sponsors_cb() {
     echo '<p>Configure os logotipos dos patrocinadores abaixo.</p>';
 }
 
-function capoeira_assets_field_img_cb() {
-    \ = get_option(\['id'], '');
+function capoeira_assets_field_img_cb($args) {
+    $val = get_option($args['id'], '');
     echo '<div class="image-upload-wrapper">';
-    echo '<input type="text" id="' . esc_attr(\['id']) . '" name="' . esc_attr(\['id']) . '" value="' . esc_attr(\) . '" class="regular-text cap-img-url" />';
+    echo '<input type="text" id="' . esc_attr($args['id']) . '" name="' . esc_attr($args['id']) . '" value="' . esc_attr($val) . '" class="regular-text cap-img-url" />';
     echo '<input type="button" class="button capoeira-upload-button" value="Escolher Imagem" />';
-    if(\) {
-        echo '<div style="margin-top:10px;"><img src="'.esc_url(\).'" style="max-width:150px;max-height:100px;" /></div>';
+    if($val) {
+        echo '<div style="margin-top:10px;"><img src="'.esc_url($val).'" style="max-width:150px;max-height:100px;" /></div>';
     }
     echo '</div>';
 }
 
 // 3. Scripts
 add_action('admin_enqueue_scripts', 'capoeira_assets_admin_scripts');
-function capoeira_assets_admin_scripts(\) {
-    if ('toplevel_page_capoeira-assets' !== \) return;
+function capoeira_assets_admin_scripts($hook) {
+    if ('toplevel_page_capoeira-assets' !== $hook) return;
     wp_enqueue_media();
     wp_enqueue_script('capoeira-assets-admin', plugin_dir_url(__FILE__) . 'admin-script.js', array('jquery'), '1.0', true);
 }
@@ -105,50 +105,50 @@ function capoeira_assets_admin_scripts(\) {
 // 4. Import Handler
 add_action('admin_init', 'capoeira_assets_handle_import');
 function capoeira_assets_handle_import() {
-    if (isset(\['capoeira_import_media']) && check_admin_referer('capoeira_import_media_action', 'capoeira_import_media_nonce')) {
+    if (isset($_POST['capoeira_import_media']) && check_admin_referer('capoeira_import_media_action', 'capoeira_import_media_nonce')) {
         if (!current_user_can('manage_options')) return;
 
         require_once(ABSPATH . 'wp-admin/includes/file.php');
         require_once(ABSPATH . 'wp-admin/includes/media.php');
         require_once(ABSPATH . 'wp-admin/includes/image.php');
 
-        \ = capoeira_get_images_map();
-        \ = get_template_directory() . '/assets/img/';
+        $images_map = capoeira_get_images_map();
+        $source_dir = get_template_directory() . '/assets/img/';
         
-        \ = 0;
+        $imported_count = 0;
 
-        foreach(\ as \ => \) {
-            \ = \ . \;
-            if (file_exists(\)) {
+        foreach($images_map as $option_id => $relative_path) {
+            $file_path = $source_dir . $relative_path;
+            if (file_exists($file_path)) {
                 // Upload para media library programaticamente
-                \ = basename(\);
-                \ = wp_upload_bits(\, null, file_get_contents(\));
+                $filename = basename($file_path);
+                $upload_file = wp_upload_bits($filename, null, file_get_contents($file_path));
                 
-                if (!\['error']) {
-                    \ = wp_check_filetype(\, null);
-                    \ = array(
-                        'post_mime_type' => \['type'],
-                        'post_title'     => preg_replace('/\.[^.]+$/', '', \),
+                if (!$upload_file['error']) {
+                    $wp_filetype = wp_check_filetype($filename, null);
+                    $attachment = array(
+                        'post_mime_type' => $wp_filetype['type'],
+                        'post_title'     => preg_replace('/\.[^.]+$/', '', $filename),
                         'post_content'   => '',
                         'post_status'    => 'inherit'
                     );
-                    \ = wp_insert_attachment(\, \['file']);
+                    $attach_id = wp_insert_attachment($attachment, $upload_file['file']);
                     
-                    if (!is_wp_error(\)) {
+                    if (!is_wp_error($attach_id)) {
                         require_once(ABSPATH . 'wp-admin/includes/image.php');
-                        \ = wp_generate_attachment_metadata(\, \['file']);
-                        wp_update_attachment_metadata(\, \);
+                        $attach_data = wp_generate_attachment_metadata($attach_id, $upload_file['file']);
+                        wp_update_attachment_metadata($attach_id, $attach_data);
                         
                         // Atualiza a opção do plugin com a nova URL
-                        \ = wp_get_attachment_url(\);
-                        update_option(\, \);
-                        \++;
+                        $attachment_url = wp_get_attachment_url($attach_id);
+                        update_option($option_id, $attachment_url);
+                        $imported_count++;
                     }
                 }
             }
         }
         
-        add_settings_error('capoeira_messages', 'capoeira_message', \ . ' imagens importadas com sucesso para a Biblioteca de Mídia!', 'updated');
+        add_settings_error('capoeira_messages', 'capoeira_message', $imported_count . ' imagens importadas com sucesso para a Biblioteca de Mídia!', 'updated');
     }
 }
 

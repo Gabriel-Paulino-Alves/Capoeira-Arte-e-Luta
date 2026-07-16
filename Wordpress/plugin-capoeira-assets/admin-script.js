@@ -6,8 +6,8 @@ jQuery(document).ready(function($){
 
         var button = $(this);
         var wrapper = button.closest('.image-upload-wrapper');
-        var input_field = wrapper.find('.image-url-input');
-        var image_preview = wrapper.find('.image-preview');
+        var input_field = wrapper.find('.cap-img-url');
+        var image_preview = wrapper.find('img');
         var remove_button = wrapper.find('.capoeira-remove-button');
 
         // Se o uploader já existir, abra-o
