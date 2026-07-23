@@ -91,6 +91,38 @@ get_header(); ?>
     </div>
   </section>
 
+  <!-- REDES SOCIAIS -->
+  <section class="section bg-ink">
+    <div class="container container--wide">
+      <div class="grid cols-12" style="margin-bottom:1rem;">
+        <div class="c4 reveal">
+          <p class="eyebrow">Canal do Mestre Mestrinho</p>
+          <h2 class="h-lg" style="color:var(--paper);">Redes sociais.</h2>
+        </div>
+        <div class="c6 start6 reveal" data-d="1">
+          <p class="maxr" style="color:var(--t-on-ink-mut);">Bastidores das aulas, batizados, apresentações e o dia a dia da Arte Luta — acompanhe de perto nos nossos canais.</p>
+        </div>
+      </div>
+      <div class="grid cols-12 reveal" data-d="1" style="margin-top:1.5rem;">
+        <a class="c4 eblock social-card" href="https://www.instagram.com/capoeira.arteluta/" target="_blank" rel="noopener">
+          <span class="sc-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> Instagram</span>
+          <h3 class="h-md">@capoeira.arteluta</h3>
+          <span class="sc-go">Seguir <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="c4 eblock social-card" href="https://www.facebook.com/capoeirarteluta/" target="_blank" rel="noopener">
+          <span class="sc-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 22v-8h2.7l.4-3H13V9c0-.9.3-1.5 1.6-1.5H16V4.9C15.6 4.8 14.6 4.8 13.5 4.8 11.2 4.8 9.7 6.2 9.7 8.7V11H7v3h2.7v8z"/></svg> Facebook</span>
+          <h3 class="h-md">/capoeirarteluta</h3>
+          <span class="sc-go">Curtir a página <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="c4 eblock social-card" href="https://www.youtube.com/Capoeiraartelutacvel" target="_blank" rel="noopener">
+          <span class="sc-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.7 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22.3 12 31 31 0 0 0 22 8.2zM10 15V9l5.2 3z"/></svg> YouTube</span>
+          <h3 class="h-md">Capoeira Arte Luta</h3>
+          <span class="sc-go">Inscrever-se <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ PATROCINADORES ============ -->
   <section class="section section--tight bg-paper-2">
     <div class="container container--wide">

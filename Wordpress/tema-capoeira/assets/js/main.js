@@ -30,19 +30,39 @@
     if (e.key === "Escape") closeMenu();
   });
 
-  /* ---- Header shadow / compact on scroll ---- */
+  /* ---- Header shadow / compact + hide on scroll down ---- */
   var header = document.querySelector(".site-header");
-  var lastY = 0;
+  var lastY = window.scrollY || window.pageYOffset;
   function onScroll() {
     var y = window.scrollY || window.pageYOffset;
     if (header) {
       if (y > 12) header.style.background = "color-mix(in srgb, var(--paper) 96%, transparent)";
       else header.style.background = "color-mix(in srgb, var(--paper) 88%, transparent)";
+
+      if (y > lastY && y > 140) {
+        header.classList.add("site-header--hidden");
+      } else {
+        header.classList.remove("site-header--hidden");
+      }
     }
     lastY = y;
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  /* ---- Back to top ---- */
+  var backToTop = document.querySelector("[data-back-to-top]");
+  if (backToTop) {
+    function toggleBackToTop() {
+      var y = window.scrollY || window.pageYOffset;
+      backToTop.classList.toggle("is-visible", y > 500);
+    }
+    window.addEventListener("scroll", toggleBackToTop, { passive: true });
+    toggleBackToTop();
+    backToTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, left: 0 });
+    });
+  }
 
   /* ---- Reveal on scroll ---- */
   var revealEls = document.querySelectorAll(".reveal");

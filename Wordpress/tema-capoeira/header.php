@@ -21,13 +21,7 @@
   <div class="container container--wide">
     <div class="site-header__bar">
       <a class="brand" href="<?php echo esc_url( home_url( '/index' ) ); ?>" aria-label="Capoeira Arte Luta — início">
-        <svg class="brand__mark" viewBox="0 0 22 38" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
-          <path d="M6 3 C 16 12, 16 26, 6 35" /><line x1="6" y1="3" x2="6" y2="35" /><circle cx="6" cy="26" r="4" />
-        </svg>
-        <span class="brand__txt">
-          <span class="brand__name">Capoeira Arte Luta</span>
-          <span class="brand__sub">Desde 1981 · Cascavel-PR</span>
-        </span>
+        <img class="brand__logo" src="<?php echo esc_url( get_template_directory_uri() . '/assets/newimg/newlogo.webp' ); ?>" alt="Capoeira Arte Luta" />
       </a>
       <nav class="nav" aria-label="Principal">
         <a href="<?php echo esc_url( home_url( '/index' ) ); ?>" aria-current="page">Início</a>
